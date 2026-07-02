@@ -68,6 +68,24 @@ python .\setup_demo.py
 python apex_etl.py
 ```
 
+
+#### 🛠️ Troubleshooting & Common Pitfalls
+
+This project is a real-world Data Engineering pipeline designed to fail gracefully when it encounters common infrastructural or configuration errors. Below are the most common issues encountered during hands-on execution and how to resolve them.
+
+---
+
+##### 1. ❌ [CONFIGURATION ERROR] Default Google Sheet ID detected
+
+**Diagnosis:**
+You executed `python apex_etl.py` before replacing the placeholder string with your personal Google Sheet ID.
+
+**The Error Output:**
+```
+❌ [CONFIGURATION ERROR] Default Google Sheet ID detected.
+💡 FIX: Please open 'apex_etl.py', locate 'GOOGLE_SHEET_ID' at the top, and paste the ID...
+```
+
 --
 
 Happy Coding!
