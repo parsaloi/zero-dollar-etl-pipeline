@@ -43,6 +43,8 @@ def run_pipeline():
             df = df[df['Receipt Type'] == 'Sales']
 
             df['From'] = standard_name
+            # --- FIX: Explicitly cast to datetime ---
+            df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
             df['Sending#'] = df['Receipt #']
             sending_data.append(df[['From', 'Date', 'Sending#', 'Total']])
 
@@ -55,6 +57,8 @@ def run_pipeline():
 
             df['From_Normalized'] = df['Vendor'].apply(normalize_branch)
             df['To'] = standard_name
+            # --- FIX: Explicitly cast to datetime ---
+            df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
             df['Receiving#'] = df['Voucher #']
             df['StockTransfer#'] = df['Invoice #']
             receiving_data.append(df[['From_Normalized', 'To', 'Date', 'StockTransfer#', 'Receiving#', 'Total']])
@@ -92,11 +96,17 @@ def run_pipeline():
 
         append_row = max((r for r in range(ws.max_row, 0, -1) if ws.cell(row=r, column=1).value), default=3) + 1
         for _, row in tab_matches.iterrows():
-            record = [row['From'], row['Date_x'].strftime('%Y-%m-%d'), row['Sending#'], "Sending", row['Total_x'],
-                      row['To'], row['Date_y'].strftime('%Y-%m-%d'), row['StockTransfer#'], row['Receiving#'], "Receiving", row['Total_y']]
+            # --- FIX: Safely format dates, falling back to empty string if missing ---
+            sent_dt = row['Date_x'].strftime('%Y-%m-%d') if pd.notna(row['Date_x']) else ""
+            recv_dt = row['Date_y'].strftime('%Y-%m-%d') if pd.notna(row['Date_y']) else ""
+
+            record = [row['From'], sent_dt, row['Sending#'], "Sending", row['Total_x'],
+                      row['To'], recv_dt, row['StockTransfer#'], row['Receiving#'], "Receiving", row['Total_y']]
             for col_idx, val in enumerate(record, start=1):
                 ws.cell(row=append_row, column=col_idx, value=val)
             append_row += 1
+
+        print(f"   ✅ Injected {len(tab_matches)} verified transfers into '{sheet_name}'.")
     wb.save(TARGET_EXCEL)
 
     print("⏳ [STAGE 4] Cloud Sync: Pushing data to Google Sheets APIs...")
