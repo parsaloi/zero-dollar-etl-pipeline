@@ -11,7 +11,7 @@ cd zero-dollar-etl-pipeline
 pip install -r requirements.txt
 ```
 
---
+---
 ### GCP Cloud Sync for Data Insights Dashboard
 
 #### Step 2: Create a Google Cloud Project
@@ -56,7 +56,7 @@ pip install -r requirements.txt
 3. Open `apex_etl.py` in your code editor.
 4. Replace `YOUR_DEMO_SHEET_ID_HERE` with the ID you copied from your Google Sheet's URL. Save the file.
 
---
+---
 
 #### Step 8: Play time
 
@@ -86,6 +86,6 @@ You executed `python apex_etl.py` before replacing the placeholder string with y
 💡 FIX: Please open 'apex_etl.py', locate 'GOOGLE_SHEET_ID' at the top, and paste the ID...
 ```
 
---
+---
 
 Happy Coding!
