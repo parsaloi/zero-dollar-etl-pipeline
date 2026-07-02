@@ -73,8 +73,6 @@ python apex_etl.py
 
 This project is a real-world Data Engineering pipeline designed to fail gracefully when it encounters common infrastructural or configuration errors. Below are the most common issues encountered during hands-on execution and how to resolve them.
 
----
-
 ##### 1. ❌ [CONFIGURATION ERROR] Default Google Sheet ID detected
 
 **Diagnosis:**
